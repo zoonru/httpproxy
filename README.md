@@ -12,9 +12,7 @@ package to offer `http.ListenAndServe` function.
 ## Installing
 
 ```sh
-go get -u github.com/go-httpproxy/httpproxy
-# or
-go get -u gopkg.in/httpproxy.v1
+go get -u github.com/zoonru/httpproxy
 ```
 
 ## Usage
