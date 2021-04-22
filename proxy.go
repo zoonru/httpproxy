@@ -115,8 +115,8 @@ func (prx *Proxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if ctx.doAuth(w, r) {
 		return
 	}
-// 	r.Header.Del("Proxy-Connection")
-// 	r.Header.Del("Proxy-Authenticate")
+	r.Header.Del("Proxy-Connection")
+	r.Header.Del("Proxy-Authenticate")
 // 	r.Header.Del("Proxy-Authorization")
 	if b := ctx.doConnect(w, r); b {
 		return
