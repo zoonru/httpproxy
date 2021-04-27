@@ -115,14 +115,15 @@ func (prx *Proxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if ctx.doAuth(w, r) {
 		return
 	}
+	authorizationHeader := r.Header.Get("Proxy-Authorization")
+
 	r.Header.Del("Proxy-Connection")
 	r.Header.Del("Proxy-Authenticate")
-// 	r.Header.Del("Proxy-Authorization")
+	r.Header.Del("Proxy-Authorization")
 	if b := ctx.doConnect(w, r); b {
 		return
 	}
 	
-	authorizationHeader := r.Header.Get("Proxy-Authorization")
 
 	for {
 		var w2 = w
