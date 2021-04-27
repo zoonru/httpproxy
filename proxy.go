@@ -117,11 +117,12 @@ func (prx *Proxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	r.Header.Del("Proxy-Connection")
 	r.Header.Del("Proxy-Authenticate")
-	r.Header.Del("Proxy-Authorization")
-
+// 	r.Header.Del("Proxy-Authorization")
 	if b := ctx.doConnect(w, r); b {
 		return
 	}
+	
+	authorizationHeader := r.Header.Get("Proxy-Authorization")
 
 	for {
 		var w2 = w
@@ -132,7 +133,7 @@ func (prx *Proxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if prx.MitmChunked {
 				cyclic = true
 			}
-			w2, r2 = ctx.doMitm()
+			w2, r2 = ctx.doMitm(authorizationHeader)
 		}
 		if w2 == nil || r2 == nil {
 			break

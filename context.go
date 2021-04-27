@@ -316,7 +316,7 @@ func (ctx *Context) doConnect(w http.ResponseWriter, r *http.Request) (b bool) {
 	return
 }
 
-func (ctx *Context) doMitm() (w http.ResponseWriter, r *http.Request) {
+func (ctx *Context) doMitm(authHeader string) (w http.ResponseWriter, r *http.Request) {
 	req, err := http.ReadRequest(ctx.hijTLSReader)
 	if err != nil {
 		if !isConnectionClosed(err) {
@@ -332,6 +332,7 @@ func (ctx *Context) doMitm() (w http.ResponseWriter, r *http.Request) {
 	req.URL.Scheme = "https"
 	req.URL.Host = ctx.ConnectHost
 	w = NewConnResponseWriter(ctx.hijTLSConn)
+	req.Header.Add("Proxy-Authorization", authHeader)
 	r = req
 	return
 }
